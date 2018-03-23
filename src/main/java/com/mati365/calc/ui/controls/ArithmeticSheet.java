@@ -22,6 +22,8 @@ import javax.swing.table.AbstractTableModel;
 import javax.validation.constraints.NotNull;
 
 import com.mati365.calc.logic.SheetLogic;
+import com.mati365.calc.logic.ArithmeticState;
+import com.mati365.calc.logic.ArithmeticAction;
 import com.mati365.calc.utils.Matrix;
 
 /**
@@ -48,11 +50,24 @@ public class ArithmeticSheet {
         table.setShowGrid(true);
         table.setShowHorizontalLines(true);
         table.setShowVerticalLines(true);
+        
+        mountStateListeners();
     }
 
     public SheetLogic getLogic()        { return this.logic; }
     public JTable getTable()            { return this.table; }
-     
+    
+    /** 
+     * Add repaint handler to table 
+     */
+    private void mountStateListeners() {
+        logic.subscribe((ArithmeticAction action, ArithmeticState state) -> {
+            Float[][] matrix = state.matrix.getArray();
+            System.out.println(matrix[0][0]);
+            this.table.repaint();
+        });
+    }
+
     /** 
      * Creates matrix abstract model linked to index 
      * 
@@ -60,6 +75,11 @@ public class ArithmeticSheet {
      */
     private static AbstractTableModel getMatrixAbstractModel(@NotNull Matrix<Float> matrix) { 
         return new AbstractTableModel() {
+            @Override
+            public String getColumnName(int column) {
+                return String.valueOf(column + 1);
+            }
+            
             @Override
             public int getColumnCount() { return matrix.getWidth(); }
             

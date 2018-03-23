@@ -102,7 +102,7 @@ public class AppMenu {
         JMenuItem help = new TranslatedMenuItem("help", null);
         menu.add(help);
 
-        JMenuItem author = new JMenuItem("author", null);
+        JMenuItem author = new TranslatedMenuItem("author", null);
         menu.add(author);
         
         return menu;

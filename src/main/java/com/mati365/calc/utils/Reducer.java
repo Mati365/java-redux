@@ -25,8 +25,17 @@ public class Reducer<Action extends ReducerAction, State> {
     }
     
     public State getState() { return this.state; }
+    
+    /**
+     * Reduces state value, default is identity
+     */
+    protected State reduce(Action action) { 
+        BiConsumer<Action, State> reducer = reducerMap.get(action.getName());
+        if (reducer != null)
+            reducer.accept(action, state);
 
-    protected State reduce(Action action) { return state; }
+        return state; 
+    }
 
     /** 
      * Add function that watches state 

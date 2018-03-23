@@ -37,6 +37,7 @@ public class IconButton extends JButton {
 
     public IconButton(@NotNull String icon, @NotNull ClickMouseListener listener) {
         this(icon);
+        this.addMouseListener(listener);
     }
 
     /**

@@ -26,9 +26,12 @@ import com.mati365.calc.utils.Reducer;
 public class SheetLogic extends Reducer<ArithmeticAction, ArithmeticState> {
     public SheetLogic() {
         super(new ArithmeticState(), new LinkedHashMap<>() {{
-            // handle CLEAR matrix action
-            put(ArithmeticAction.CLEAR, (ArithmeticAction action, ArithmeticState state) -> {
-                state.matrix.fill(1.f);
+            /** clear whole matrix */ put(ArithmeticAction.CLEAR, (ArithmeticAction action, ArithmeticState state) -> {
+                state.matrix.fill(0.f);
+            });
+
+            /** attach error */ put(ArithmeticAction.CALC_ERROR, (ArithmeticAction action, ArithmeticState state) -> {
+                state.error = action.getMessage();
             });
         }});
     }
