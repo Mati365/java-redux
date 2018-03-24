@@ -33,7 +33,13 @@ public class SheetLogic extends Reducer<ArithmeticAction, ArithmeticState> {
     public SheetLogic() {
         super(new ArithmeticState(), new LinkedHashMap<>() {{
             /** clear whole matrix */ put(ArithmeticAction.CLEAR, (ArithmeticAction action, ArithmeticState state) -> {
-                state.matrix.fill(0.f);
+                Float[] args = action.getArgs();
+
+                state.matrix.fill(
+                        args == null || args.length == 0 
+                            ? 0.f
+                            : args[0]
+                        );
                 state.operationResult = "";
             });
 
@@ -53,14 +59,23 @@ public class SheetLogic extends Reducer<ArithmeticAction, ArithmeticState> {
                 Integer operation = Math.round(action.getArgs()[0]);
                 Float value = null;
 
+                state.lastOperation = operation;
                 if (operation == SheetLogic.AVG_MATRIX) {
                     Float sum = state.matrix.reduce(0.f, (acc, val) -> acc + val);
                     value = sum / state.matrix.getLength();
 
-                } else if (operation == SheetLogic.SUM_MATRIX) 
+                } else if (operation == SheetLogic.SUM_MATRIX) { 
                     value = state.matrix.reduce(0.f, (acc, val) -> acc + val);
-               
-                state.lastOperation = operation;
+                } else if (operation == SheetLogic.MIN_MAX_MATRIX) {
+                    Float min = state.matrix.reduce(Float.MAX_VALUE, (acc, val) -> Math.min(acc, val));
+                    Float max = state.matrix.reduce(Float.MIN_VALUE, (acc, val) -> Math.max(acc, val));
+                    
+                    state.operationResult = Resources.Translations.getString(
+                            "min_max_value", 
+                            min, max);
+                    return;
+                }
+
                 state.operationResult = String.valueOf(value);
             });
         }});
@@ -82,14 +97,21 @@ public class SheetLogic extends Reducer<ArithmeticAction, ArithmeticState> {
     }
     
     /**
-     * Clear whole array with default value
+     * Clear whole array with value
      *
      * @action  
      */
-    public void clear() {
-        this.dispatch(new ArithmeticAction(ArithmeticAction.CLEAR, null)); 
+    public void fill(Float value) {
+        this.dispatch(
+                new ArithmeticAction(
+                    ArithmeticAction.CLEAR, 
+                    new Float[] { value })); 
     }
     
+    public void clear() {
+        this.fill(0.f);
+    }
+
     /** 
      * Executes operation on matrix  
      * 

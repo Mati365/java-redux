@@ -44,7 +44,7 @@ public class CellCoordinatePanel extends JPanel {
 
     public CellCoordinatePanel(@NotNull SheetLogic logic) {
         this.logic = logic;    
-        setLayout(new FlowLayout(FlowLayout.LEFT, 20, 10));
+        setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         
         row = new JSpinner(
                 new SpinnerNumberModel(
@@ -67,6 +67,24 @@ public class CellCoordinatePanel extends JPanel {
         
         add(number);
         add(this.getEnterButton());
+        add(this.getFillButton());
+    }
+    
+    private JButton getFillButton() {
+        JButton btn = new JButton(Resources.Translations.getString("fill")); 
+        btn.addMouseListener((ClickMouseListener) (MouseEvent e) -> {
+            try {
+                Float value = Float.parseFloat(number.getText());
+                logic.fill(value);
+            } catch(NumberFormatException exception) {
+                JOptionPane.showMessageDialog(
+                    null,
+                    Resources.Translations.getString("incorrect_number_format"),
+                    Resources.Translations.getString("error"),
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        return btn;
     }
 
     private JButton getEnterButton() { 

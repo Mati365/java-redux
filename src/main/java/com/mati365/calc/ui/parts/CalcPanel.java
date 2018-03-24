@@ -66,6 +66,7 @@ class ExpressionPanel extends Logicable<SheetLogic> {
         JPanel panel = new JPanel(new GridLayout(0, 2));
 
         JList<HiddenValueItem> operations = new JList<>(ExpressionPanel.OPERATIONS);
+        operations.setSelectedIndex(1);
         operations.addListSelectionListener((ListSelectionEvent e) -> {
             logic.operation(operations.getSelectedValue().getValue()); 
         });
