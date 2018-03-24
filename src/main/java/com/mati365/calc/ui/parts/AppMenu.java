@@ -45,7 +45,7 @@ public class AppMenu {
         menu = new JMenuBar(); 
 
         menu.add(this.getFileMenu());
-        menu.add(this.getEditMenu());
+        //menu.add(this.getEditMenu());
         menu.add(this.getInfoMenu());
     }
 

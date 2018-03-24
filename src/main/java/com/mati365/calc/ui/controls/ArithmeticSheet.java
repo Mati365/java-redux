@@ -50,7 +50,8 @@ public class ArithmeticSheet {
         table.setShowGrid(true);
         table.setShowHorizontalLines(true);
         table.setShowVerticalLines(true);
-        
+        table.setRowSelectionAllowed(false);
+
         mountStateListeners();
     }
 
@@ -62,8 +63,6 @@ public class ArithmeticSheet {
      */
     private void mountStateListeners() {
         logic.subscribe((ArithmeticAction action, ArithmeticState state) -> {
-            Float[][] matrix = state.matrix.getArray();
-            System.out.println(matrix[0][0]);
             this.table.repaint();
         });
     }

@@ -23,6 +23,8 @@ import com.mati365.calc.utils.Reducer;
  */
 public class ArithmeticState {
     public String error = null;
+    public Integer lastOperation = 2;
+    public String operationResult = "";
     public Matrix<Float> matrix = new Matrix<Float>(new Dimension(5, 5), Float.class).fill(0.f);
 }
 

@@ -13,8 +13,10 @@ import com.mati365.calc.utils.ReducerAction;
 public class ArithmeticAction extends ReducerAction {
     public static final String CLEAR            = "@arithmetic/clear";
     public static final String LOAD             = "@arithmetic/load";
+    public static final String LOAD_CELL        = "@arithmetic/load_cell";
     public static final String FILL             = "@arithmetic/fill";
     public static final String CALC_ERROR       = "@arithmetic/calc_error";
+    public static final String MATRIX_OPERATION = "@arithmetic/matrix_operation";
 
     private Float[] args;
     private String message;

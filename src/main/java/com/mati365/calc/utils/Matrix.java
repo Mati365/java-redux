@@ -126,7 +126,7 @@ public class Matrix<T extends Number> {
             for (T cell : row)
                 buffer = reducer.apply(buffer, cell);
         }
-        return acc;
+        return buffer;
     }
 }
 

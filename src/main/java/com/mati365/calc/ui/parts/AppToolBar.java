@@ -30,9 +30,9 @@ public class AppToolBar {
         toolbar.add(new IconButton("new", (MouseEvent e) -> {
             logic.clear();
         }));
-        toolbar.add(new IconButton("undo"));
-        toolbar.add(new IconButton("redo"));
-        toolbar.add(new IconButton("add"));
+        //toolbar.add(new IconButton("undo"));
+        //toolbar.add(new IconButton("redo"));
+        //toolbar.add(new IconButton("add"));
         toolbar.add(new IconButton("exit", (MouseEvent e) -> {
             System.exit(0);
         }));  
