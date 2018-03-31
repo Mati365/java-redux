@@ -44,9 +44,7 @@ public class OperationPanel {
         panel.setLayout(new GridLayout(3, 0));   
         
         JButton clear = new JButton(Resources.Translations.getString("clear"));
-        clear.addMouseListener((ClickMouseListener) (MouseEvent) -> {
-            logic.clear();
-        });
+        clear.addMouseListener((ClickMouseListener) (MouseEvent) -> logic.clear());
         panel.add(clear);
             
         JButton load = new JButton(Resources.Translations.getString("open"));

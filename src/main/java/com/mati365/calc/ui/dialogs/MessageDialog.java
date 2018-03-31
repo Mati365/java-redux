@@ -11,7 +11,6 @@ package com.mati365.calc.ui;
 import javax.validation.constraints.NotNull;
 
 import java.awt.BorderLayout;
-
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;

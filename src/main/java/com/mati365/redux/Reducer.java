@@ -52,7 +52,7 @@ public class Reducer<Action extends ReducerAction, State extends ReducerState> {
      * @param   key     
      * @param   listener
      */
-    public Reducer<?, ?> addActionReducer(
+    public Reducer<Action, State> addActionReducer(
             @NotNull String key, 
             @NotNull BiFunction<Action, State, State> listener) {
         reducerMap.put(key, listener);

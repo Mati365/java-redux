@@ -17,6 +17,7 @@ import javax.validation.constraints.NotNull;
 
 import com.mati365.calc.utils.Resources;
 import com.mati365.calc.logic.SheetLogic;
+import com.mati365.calc.logic.Logicable;
 
 /** 
  * MenuItem with translation 
@@ -38,14 +39,15 @@ class TranslatedMenuItem extends JMenuItem {
  * 
  * @author Mateusz Bagiński (cziken58@gmail.com)
  */
-public class AppMenu {
+public class AppMenu extends Logicable<SheetLogic> {
     private JMenuBar menu = null;
 
     public AppMenu(@NotNull SheetLogic logic) {
+        super(logic);
         menu = new JMenuBar(); 
 
         menu.add(this.getFileMenu());
-        //menu.add(this.getEditMenu());
+        menu.add(this.getEditMenu());
         menu.add(this.getInfoMenu());
     }
 
@@ -82,10 +84,10 @@ public class AppMenu {
     public JMenu getEditMenu() {
         JMenu menu = new JMenu(Resources.Translations.getString("edit"));
 
-        JMenuItem undo = new TranslatedMenuItem("undo", null);
+        JMenuItem undo = new TranslatedMenuItem("undo", (MouseEvent) -> logic.undo());
         menu.add(undo);
 
-        JMenuItem redo = new TranslatedMenuItem("redo", null);
+        JMenuItem redo = new TranslatedMenuItem("redo", (MouseEvent) -> logic.redo());
         menu.add(redo);
         
         return menu;

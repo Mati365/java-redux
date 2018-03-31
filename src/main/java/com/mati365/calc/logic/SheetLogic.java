@@ -91,9 +91,20 @@ public class SheetLogic extends ActionCreator<SheetReducer> {
                     ArithmeticAction.LOAD_CELL,
                     args));
     }
-
+    
+    /**
+     * Pops history and reverts app state
+     */
     public void undo() {
         reducer.dispatch(
                 new ArithmeticAction(TimeTravelReducer.UNDO));
+    }
+    
+    /**
+     * Pops future history and revertes app state
+     */
+    public void redo() {
+        reducer.dispatch(
+                new ArithmeticAction(TimeTravelReducer.REDO));
     }
 }

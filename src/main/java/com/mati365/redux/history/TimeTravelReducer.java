@@ -27,10 +27,12 @@ public class TimeTravelReducer<Action extends ReducerAction, State extends Reduc
     public static final String UNDO = "@time/undo";
     public static final String REDO = "@time/redo";
 
-    /** whole app history should be fully serializable */
-    private LinkedList<State> cachedStates = new LinkedList<State>();
     private byte maxHistoryLength = 8;
     private String[] ignoredActions = {};
+
+    /** whole app history should be fully serializable */
+    private LinkedList<State> cachedStates = new LinkedList<State>();
+    private LinkedList<State> cachedFutureStates = new LinkedList<State>();
 
     public TimeTravelReducer(
             @NotNull State initialState, 
@@ -62,15 +64,26 @@ public class TimeTravelReducer<Action extends ReducerAction, State extends Reduc
     /** 
      * Adds undo / redo action listener  
      */
+    @SuppressWarnings("unchecked")
     private void attachTimeReducers() {
        super
+          /** UNDO */
           .addActionReducer(
                   TimeTravelReducer.UNDO,
                   (Action action, State state) -> {
+                      cachedFutureStates.push((State) state.branch());
                       return cachedStates.isEmpty() 
                           ? state 
                           : cachedStates.poll();
-                  }); 
+                  })
+          /** REDO */
+          .addActionReducer(
+                  TimeTravelReducer.REDO,
+                  (Action action, State state) -> {
+                      return cachedFutureStates.isEmpty() 
+                          ? state 
+                          : cachedFutureStates.poll();
+                  });
     }
 
     @Override
