@@ -38,7 +38,8 @@ public class ArithmeticSheet {
     public ArithmeticSheet(@NotNull SheetLogic logic) {
         this.logic = logic;
         this.table = new JTable(
-                ArithmeticSheet.getMatrixAbstractModel(logic.getState().matrix)) {
+                ArithmeticSheet.getMatrixAbstractModel(
+                    logic.getReducer().getState().matrix)) {
             @Override
             public Component prepareRenderer(TableCellRenderer renderer, int row, int col) {
                 JLabel c = (JLabel) super.prepareRenderer(renderer, row, col);
@@ -62,9 +63,11 @@ public class ArithmeticSheet {
      * Add repaint handler to table 
      */
     private void mountStateListeners() {
-        logic.subscribe((ArithmeticAction action, ArithmeticState state) -> {
-            this.table.repaint();
-        });
+        logic
+            .getReducer()
+            .subscribe((ArithmeticAction action, ArithmeticState state) -> {
+                this.table.repaint();
+            });
     }
 
     /** 

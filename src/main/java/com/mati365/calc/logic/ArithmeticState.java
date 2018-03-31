@@ -8,13 +8,13 @@
  */
 package com.mati365.calc.logic;
 
+import javax.validation.constraints.NotNull;
+
 import java.util.Observable;
 import java.awt.Dimension;
 
-import javax.validation.constraints.NotNull;
-
+import com.mati365.redux.Reducer;
 import com.mati365.calc.utils.Matrix;
-import com.mati365.calc.utils.Reducer;
 
 /** 
  * Whole app state  
@@ -26,5 +26,14 @@ public class ArithmeticState {
     public Integer lastOperation = 2;
     public String operationResult = "";
     public Matrix<Float> matrix = new Matrix<Float>(new Dimension(5, 5), Float.class).fill(0.f);
+    
+    public ArithmeticState() {}
+
+    public ArithmeticState(ArithmeticState previousState) {
+        this.error = previousState.error;
+        this.lastOperation = lastOperation;
+        this.operationResult = operationResult;
+        this.matrix = new Matrix<>(previousState.matrix);
+    }
 }
 

@@ -17,16 +17,18 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 
 import java.lang.NumberFormatException;
+import java.util.function.Consumer;
 
 import java.awt.event.MouseEvent;
-import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.Point;
 
 import com.mati365.calc.utils.ClickMouseListener;
 
-import com.mati365.calc.logic.Resources;
+import com.mati365.calc.utils.Resources;
 import com.mati365.calc.logic.SheetLogic;
 
 /** 
@@ -44,22 +46,26 @@ public class CellCoordinatePanel extends JPanel {
 
     public CellCoordinatePanel(@NotNull SheetLogic logic) {
         this.logic = logic;    
-        setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        setLayout(new GridLayout(1, 7));
         
         row = new JSpinner(
                 new SpinnerNumberModel(
                     0, 0, 
-                    logic.getState().matrix.getWidth() - 1, 1));
+                    logic.getReducer().getState().matrix.getWidth() - 1, 1));
 
-        add(new JLabel(Resources.Translations.getString("row")));
+        add(new JLabel(
+                    Resources.Translations.getString("row"),
+                    SwingConstants.RIGHT));
         add(row);
 
         col = new JSpinner(
                 new SpinnerNumberModel(
                     0, 0, 
-                    logic.getState().matrix.getHeight() - 1, 1));
+                    logic.getReducer().getState().matrix.getHeight() - 1, 1));
 
-        add(new JLabel(Resources.Translations.getString("col")));
+        add(new JLabel(
+                    Resources.Translations.getString("col"),
+                    SwingConstants.RIGHT));
         add(col);
 
         number = new JTextField();
@@ -70,19 +76,23 @@ public class CellCoordinatePanel extends JPanel {
         add(this.getFillButton());
     }
     
+    private void safeValueOperator(Consumer<Float> fn) { 
+        try {
+            Float value = Float.parseFloat(number.getText());
+            fn.accept(value);
+        } catch(NumberFormatException exception) {
+            JOptionPane.showMessageDialog(
+                null,
+                Resources.Translations.getString("incorrect_number_format"),
+                Resources.Translations.getString("error"),
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     private JButton getFillButton() {
         JButton btn = new JButton(Resources.Translations.getString("fill")); 
         btn.addMouseListener((ClickMouseListener) (MouseEvent e) -> {
-            try {
-                Float value = Float.parseFloat(number.getText());
-                logic.fill(value);
-            } catch(NumberFormatException exception) {
-                JOptionPane.showMessageDialog(
-                    null,
-                    Resources.Translations.getString("incorrect_number_format"),
-                    Resources.Translations.getString("error"),
-                    JOptionPane.ERROR_MESSAGE);
-            }
+            safeValueOperator(logic::fill);
         });
         return btn;
     }
@@ -90,20 +100,13 @@ public class CellCoordinatePanel extends JPanel {
     private JButton getEnterButton() { 
         JButton btn = new JButton(Resources.Translations.getString("enter"));
         btn.addMouseListener((ClickMouseListener) (MouseEvent e) -> {
-            try {
-                Float value = Float.parseFloat(number.getText());
+            safeValueOperator((value) -> {
                 logic.load(
                         new Point(
                             (Integer)col.getValue(),
                             (Integer)row.getValue()),
                         value);
-            } catch(NumberFormatException exception) {
-                JOptionPane.showMessageDialog(
-                    null,
-                    Resources.Translations.getString("incorrect_number_format"),
-                    Resources.Translations.getString("error"),
-                    JOptionPane.ERROR_MESSAGE);
-            }
+            });    
         });
         return btn;
     }

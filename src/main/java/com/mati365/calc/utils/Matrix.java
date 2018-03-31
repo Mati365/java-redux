@@ -21,9 +21,22 @@ import java.lang.IllegalStateException;
 import org.apache.commons.lang3.ArrayUtils;
 import javax.validation.constraints.NotNull;
 
-public class Matrix<T extends Number> {
+public class Matrix<T extends Number> implements Cloneable {
     private T[][] array = null;
     private Dimension dimensions = null;
+
+    /** 
+     * Copy constructor of matrix class 
+     * 
+     * @param matrix 
+     */
+    @SuppressWarnings("unchecked")
+    public Matrix(@NotNull Matrix<T> matrix) {
+        Class<?> cellType = matrix.array[0][0].getClass().getComponentType();
+
+        this.dimensions = (Dimension) matrix.dimensions.clone();
+        this.array = (T[][]) Array.newInstance(cellType, dimensions.width, dimensions.height);  
+    }
 
     /**
      * Creates matrix from array, dimensions is inherited

@@ -15,7 +15,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.validation.constraints.NotNull;
 
-import com.mati365.calc.logic.Resources;
+import com.mati365.calc.utils.Resources;
 import com.mati365.calc.logic.SheetLogic;
 
 /** 

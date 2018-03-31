@@ -27,6 +27,7 @@ import java.awt.Insets;
 
 import com.mati365.calc.logic.*;
 import com.mati365.calc.utils.HiddenValueItem;
+import com.mati365.calc.utils.Resources;
 
 /** 
  * @author Mateusz Bagiński (cziken58@gmail.com)
@@ -35,15 +36,15 @@ class ExpressionPanel extends Logicable<SheetLogic> {
     private static final HiddenValueItem[] OPERATIONS = {
         new HiddenValueItem(
                 Resources.Translations.getString("elements_sum"),
-                SheetLogic.SUM_MATRIX),
+                SheetReducer.SUM_MATRIX),
         
         new HiddenValueItem(
                 Resources.Translations.getString("elements_avg"),
-                SheetLogic.AVG_MATRIX),
+                SheetReducer.AVG_MATRIX),
 
         new HiddenValueItem(
                 Resources.Translations.getString("elements_max_min"),
-                SheetLogic.MIN_MAX_MATRIX)
+                SheetReducer.MIN_MAX_MATRIX)
     };
     
     public ExpressionPanel(@NotNull SheetLogic logic) { super(logic); }
@@ -56,9 +57,11 @@ class ExpressionPanel extends Logicable<SheetLogic> {
                     BorderFactory.createEtchedBorder(),
                     Resources.Translations.getString("expression_value")));
 
-        logic.subscribe((ArithmeticAction action, ArithmeticState state) -> { 
-            input.setText(state.operationResult);
-        });
+        logic
+            .getReducer()
+            .subscribe((ArithmeticAction action, ArithmeticState state) -> { 
+                input.setText(state.operationResult);
+            });
         return input; 
     }
 
@@ -104,7 +107,7 @@ public class CalcPanel {
                 c);
 
         c.fill = GridBagConstraints.NONE;
-        c.weightx = 0.1;
+        c.weightx = 0.05;
         c.gridx = 3;
         c.gridy = 0;
         panel.add(

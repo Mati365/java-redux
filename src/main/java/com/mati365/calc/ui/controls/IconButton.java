@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 import java.awt.Dimension;
 import javax.swing.JButton;
 
-import com.mati365.calc.logic.Resources;
+import com.mati365.calc.utils.Resources;
 import com.mati365.calc.utils.ClickMouseListener;
 
 /** 

@@ -14,15 +14,15 @@ import javax.validation.constraints.NotNull;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.BoxLayout;
 
 import java.lang.NumberFormatException;
 
 import java.awt.event.MouseEvent;
+import java.awt.GridLayout;
 
 import com.mati365.calc.utils.ClickMouseListener;
 
-import com.mati365.calc.logic.Resources;
+import com.mati365.calc.utils.Resources;
 import com.mati365.calc.logic.SheetLogic;
 
 /** 
@@ -41,7 +41,7 @@ public class OperationPanel {
 
     public JPanel getPanel() { 
         JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));   
+        panel.setLayout(new GridLayout(3, 0));   
         
         JButton clear = new JButton(Resources.Translations.getString("clear"));
         clear.addMouseListener((ClickMouseListener) (MouseEvent) -> {

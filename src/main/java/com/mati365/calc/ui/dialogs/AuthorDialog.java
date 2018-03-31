@@ -11,7 +11,7 @@ package com.mati365.calc.ui;
 import javax.validation.constraints.NotNull;
 import javax.swing.JComponent;
 
-import com.mati365.calc.logic.Resources;
+import com.mati365.calc.utils.Resources;
 
 /** 
  * @author Mateusz Bagiński (cziken58@gmail.com)

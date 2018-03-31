@@ -14,7 +14,7 @@ import javax.swing.plaf.ColorUIResource;
 import java.awt.Color;
 import java.awt.Dimension;
 
-import com.mati365.calc.logic.Resources;
+import com.mati365.calc.utils.Resources;
 
 /** 
  * Main app class, opens window

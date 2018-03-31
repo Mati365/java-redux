@@ -8,8 +8,12 @@
  */
 package com.mati365.calc.logic;
 
-import com.mati365.calc.utils.ReducerAction;
+import javax.validation.constraints.NotNull;
+import com.mati365.redux.ReducerAction;
 
+/** 
+ * @author Mateusz Bagiński (cziken58@gmail.com)
+ */
 public class ArithmeticAction extends ReducerAction {
     public static final String CLEAR            = "@arithmetic/clear";
     public static final String LOAD             = "@arithmetic/load";
@@ -18,19 +22,12 @@ public class ArithmeticAction extends ReducerAction {
     public static final String CALC_ERROR       = "@arithmetic/calc_error";
     public static final String MATRIX_OPERATION = "@arithmetic/matrix_operation";
 
-    private Float[] args;
-    private String message;
+    private Object payload;
 
-    public ArithmeticAction(String name, Float[] args) {
+    public ArithmeticAction(@NotNull String name, Object payload) {
         super(name);
-        this.args = args;
-    }
+        this.payload = payload;
+    } 
 
-    public ArithmeticAction(String name, Float[] args, String message) {
-        this(name, args);
-        this.message = message;
-    }
-    
-    public Float[] getArgs()    { return this.args; }
-    public String getMessage()  { return this.message; }
+    public Object getPayload() { return this.payload; }
 }

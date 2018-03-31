@@ -6,7 +6,7 @@
  * modifications:
  *
  */
-package com.mati365.calc.utils;
+package com.mati365.redux;
 
 import javax.validation.constraints.NotNull;
 
