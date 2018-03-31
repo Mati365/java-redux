@@ -31,11 +31,19 @@ public class Matrix<T extends Number> implements Cloneable {
      * @param matrix 
      */
     @SuppressWarnings("unchecked")
-    public Matrix(@NotNull Matrix<T> matrix) {
-        Class<?> cellType = matrix.array[0][0].getClass().getComponentType();
-
-        this.dimensions = (Dimension) matrix.dimensions.clone();
-        this.array = (T[][]) Array.newInstance(cellType, dimensions.width, dimensions.height);  
+    public Matrix(Class<? extends T> cellType, @NotNull Matrix<T> matrix) {
+        dimensions = (Dimension) matrix.dimensions.clone();
+        array = (T[][]) Array.newInstance(cellType, dimensions.width, dimensions.height);  
+        
+        for (int i = 0; i < dimensions.height; ++i) {
+            System.arraycopy(
+                matrix.array[i],
+                0,
+                array[i],
+                0,
+                dimensions.width
+            ); 
+        }
     }
 
     /**
@@ -61,7 +69,7 @@ public class Matrix<T extends Number> implements Cloneable {
     @SuppressWarnings("unchecked")
     public Matrix(Dimension dimensions, Class<? extends T> cellType) {
         this.dimensions = dimensions;
-        this.array = (T[][]) Array.newInstance(cellType, dimensions.width, dimensions.height);  
+        this.array = (T[][]) Array.newInstance(cellType, dimensions.height, dimensions.width);  
     }
 
     public T[][] getArray()     { return array; }

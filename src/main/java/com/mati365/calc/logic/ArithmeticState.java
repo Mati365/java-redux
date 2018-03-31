@@ -14,6 +14,7 @@ import java.util.Observable;
 import java.awt.Dimension;
 
 import com.mati365.redux.Reducer;
+import com.mati365.redux.ReducerState;
 import com.mati365.calc.utils.Matrix;
 
 /** 
@@ -21,19 +22,22 @@ import com.mati365.calc.utils.Matrix;
  * 
  * @author Mateusz Bagiński (cziken58@gmail.com)
  */
-public class ArithmeticState {
+public class ArithmeticState implements ReducerState {
     public String error = null;
     public Integer lastOperation = 2;
     public String operationResult = "";
-    public Matrix<Float> matrix = new Matrix<Float>(new Dimension(5, 5), Float.class).fill(0.f);
+    public Matrix<Float> matrix = new Matrix<>(new Dimension(5, 5), Float.class).fill(0.f);
     
-    public ArithmeticState() {}
+    @Override
+    public ArithmeticState branch() {
+        ArithmeticState state = new ArithmeticState();
 
-    public ArithmeticState(ArithmeticState previousState) {
-        this.error = previousState.error;
-        this.lastOperation = lastOperation;
-        this.operationResult = operationResult;
-        this.matrix = new Matrix<>(previousState.matrix);
+        state.error = this.error;
+        state.lastOperation = this.lastOperation;
+        state.operationResult = this.operationResult;
+        state.matrix = new Matrix<>(Float.class, this.matrix);
+        
+        return state;
     }
 }
 

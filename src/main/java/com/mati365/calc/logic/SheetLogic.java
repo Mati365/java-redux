@@ -15,6 +15,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 
 import com.mati365.redux.ActionCreator;
+import com.mati365.redux.history.TimeTravelReducer;
 
 /** 
  * Whole App logic  
@@ -24,17 +25,21 @@ import com.mati365.redux.ActionCreator;
 public class SheetLogic extends ActionCreator<SheetReducer> {
     public SheetLogic() {
         super(new SheetReducer());
+        
+        reducer
+            .setIgnoredActions(new String[] {
+                ArithmeticAction.MATRIX_OPERATION
+            })
+            
+            .subscribe((ArithmeticAction action, ArithmeticState state) -> {
+                if (action.getName() == ArithmeticAction.MATRIX_OPERATION)
+                    return;
 
-        reducer.subscribe(
-                (ArithmeticAction action, ArithmeticState state) -> {
-                    if (action.getName() == ArithmeticAction.MATRIX_OPERATION)
-                        return;
-
-                    SheetLogic.this.reducer.dispatch(
-                        new ArithmeticAction(
-                            ArithmeticAction.MATRIX_OPERATION,
-                            state.lastOperation)); 
-                });
+                SheetLogic.this.reducer.dispatch(
+                    new ArithmeticAction(
+                        ArithmeticAction.MATRIX_OPERATION,
+                        state.lastOperation)); 
+            });
     }
 
     public SheetReducer getReducer() { return this.reducer; }
@@ -85,5 +90,10 @@ public class SheetLogic extends ActionCreator<SheetReducer> {
                 new ArithmeticAction(
                     ArithmeticAction.LOAD_CELL,
                     args));
+    }
+
+    public void undo() {
+        reducer.dispatch(
+                new ArithmeticAction(TimeTravelReducer.UNDO));
     }
 }

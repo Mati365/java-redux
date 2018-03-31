@@ -21,13 +21,12 @@ public class ArithmeticAction extends ReducerAction {
     public static final String FILL             = "@arithmetic/fill";
     public static final String CALC_ERROR       = "@arithmetic/calc_error";
     public static final String MATRIX_OPERATION = "@arithmetic/matrix_operation";
-
-    private Object payload;
+    
+    public ArithmeticAction(@NotNull String name) {
+        super(name);
+    }
 
     public ArithmeticAction(@NotNull String name, Object payload) {
-        super(name);
-        this.payload = payload;
-    } 
-
-    public Object getPayload() { return this.payload; }
+        super(name, payload);
+    }
 }

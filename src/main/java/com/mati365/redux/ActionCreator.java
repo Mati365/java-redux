@@ -9,13 +9,14 @@
 package com.mati365.redux;
 
 import javax.validation.constraints.NotNull;
+import com.mati365.redux.Reducer;
 
 /** 
  * Class that holds reference to reducer 
  *
  * @author Mateusz Bagiński (cziken58@gmail.com)
  */
-public class ActionCreator<T> {
+public class ActionCreator<T extends Reducer<?, ?>> {
     protected T reducer = null;
     
     public ActionCreator(@NotNull T reducer) {

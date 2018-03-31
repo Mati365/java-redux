@@ -21,9 +21,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.AbstractTableModel;
 import javax.validation.constraints.NotNull;
 
-import com.mati365.calc.logic.SheetLogic;
-import com.mati365.calc.logic.ArithmeticState;
-import com.mati365.calc.logic.ArithmeticAction;
+import com.mati365.calc.logic.*;
 import com.mati365.calc.utils.Matrix;
 
 /**
@@ -36,10 +34,11 @@ public class ArithmeticSheet {
     private SheetLogic logic = null;
 
     public ArithmeticSheet(@NotNull SheetLogic logic) {
+        SheetReducer reducer = logic.getReducer();
+
         this.logic = logic;
         this.table = new JTable(
-                ArithmeticSheet.getMatrixAbstractModel(
-                    logic.getReducer().getState().matrix)) {
+                ArithmeticSheet.getMatrixAbstractModel(reducer)) {
             @Override
             public Component prepareRenderer(TableCellRenderer renderer, int row, int col) {
                 JLabel c = (JLabel) super.prepareRenderer(renderer, row, col);
@@ -47,7 +46,7 @@ public class ArithmeticSheet {
                 return c;
             }
         };
-
+        
         table.setShowGrid(true);
         table.setShowHorizontalLines(true);
         table.setShowVerticalLines(true);
@@ -75,7 +74,7 @@ public class ArithmeticSheet {
      * 
      * @return 
      */
-    private static AbstractTableModel getMatrixAbstractModel(@NotNull Matrix<Float> matrix) { 
+    private static AbstractTableModel getMatrixAbstractModel(@NotNull SheetReducer reducer) { 
         return new AbstractTableModel() {
             @Override
             public String getColumnName(int column) {
@@ -83,17 +82,23 @@ public class ArithmeticSheet {
             }
             
             @Override
-            public int getColumnCount() { return matrix.getWidth(); }
+            public int getColumnCount() { 
+                return reducer.getState().matrix.getWidth(); 
+            }
             
             @Override
-            public int getRowCount() { return matrix.getHeight(); }
+            public int getRowCount() { 
+                return reducer.getState().matrix.getHeight(); 
+            }
             
             @Override
             public boolean isCellEditable(int row, int cell) { return false; }
 
             @Override
             public Object getValueAt(int row, int col) {
-                return matrix.getCellAt(new Point(col, row)); 
+                return reducer
+                    .getState()
+                    .matrix.getCellAt(new Point(col, row)); 
             }
         };    
     }

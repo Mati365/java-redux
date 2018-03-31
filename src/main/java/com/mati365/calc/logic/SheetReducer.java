@@ -20,12 +20,13 @@ import javax.validation.constraints.NotNull;
 
 import com.mati365.calc.utils.Resources;
 import com.mati365.calc.utils.Matrix;
-import com.mati365.redux.Reducer;
+
+import com.mati365.redux.history.TimeTravelReducer;
 
 /** 
  * @author Mateusz Bagiński (cziken58@gmail.com)
  */
-public class SheetReducer extends Reducer<ArithmeticAction, ArithmeticState> {
+public class SheetReducer extends TimeTravelReducer<ArithmeticAction, ArithmeticState> {
     public static final int SUM_MATRIX          = 1;
     public static final int AVG_MATRIX          = 2;
     public static final int MIN_MAX_MATRIX      = 3;
@@ -43,40 +44,43 @@ public class SheetReducer extends Reducer<ArithmeticAction, ArithmeticState> {
      * @param action 
      * @param state 
      */
-    private static void reduceClear(ArithmeticAction action, ArithmeticState state) {
+    private static ArithmeticState reduceClear(ArithmeticAction action, ArithmeticState state) {
         Float args = (Float) action.getPayload();
 
         state.operationResult = "";
         state.matrix.fill(args == null ? 0.f : args);
+        return state;
     }
 
     /** 
      * @param action 
      * @param state 
      */
-    private static void reduceCalcError(ArithmeticAction action, ArithmeticState state) {
+    private static ArithmeticState reduceCalcError(ArithmeticAction action, ArithmeticState state) {
         state.error = (String) action.getPayload();
         state.operationResult = "";
+        return state;
     };
 
     /** 
      * @param action 
      * @param state 
      */
-    private static void reduceLoadCell(ArithmeticAction action, ArithmeticState state) {
+    private static ArithmeticState reduceLoadCell(ArithmeticAction action, ArithmeticState state) {
         Float[] args = (Float[]) action.getPayload();
         state.matrix.load(
                 new Point(
                     Math.round(args[0]), 
                     Math.round(args[1])),
                 args[2]);
+        return state;
     };
     
     /** 
      * @param action 
      * @param state 
      */
-    private static void reduceMatrixOperation(ArithmeticAction action, ArithmeticState state) {
+    private static ArithmeticState reduceMatrixOperation(ArithmeticAction action, ArithmeticState state) {
         Integer operation = Math.round((int)action.getPayload());
         Float value = null;
 
@@ -94,10 +98,11 @@ public class SheetReducer extends Reducer<ArithmeticAction, ArithmeticState> {
             state.operationResult = Resources.Translations.getString(
                     "min_max_value", 
                     min, max);
-            return;
+            return state;
         }
 
         state.operationResult = String.valueOf(value);
+        return state;
     };
 }
 

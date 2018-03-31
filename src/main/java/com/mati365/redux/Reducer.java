@@ -11,30 +11,52 @@ package com.mati365.redux;
 import javax.validation.constraints.NotNull;
 
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+
 import java.util.LinkedHashMap;
 import java.util.UUID;
 
-public class Reducer<Action extends ReducerAction, State> {
-    protected State state = null;
+public class Reducer<Action extends ReducerAction, State extends ReducerState> {
+    private State state = null;
+    
     private LinkedHashMap<UUID, BiConsumer<Action, State>> consumers = new LinkedHashMap<>();
-    private LinkedHashMap<String, BiConsumer<Action, State>> reducerMap = null;
+    private LinkedHashMap<String, BiFunction<Action, State, State>> reducerMap = null;
 
-    public Reducer(State initialState, LinkedHashMap<String, BiConsumer<Action, State>> reducerMap) {
+    public Reducer(
+            @NotNull State initialState, 
+            @NotNull LinkedHashMap<String, BiFunction<Action, State, State>> reducerMap) {
         this.state = initialState;
         this.reducerMap = reducerMap;
     }
     
     public State getState() { return this.state; }
-    
+    public LinkedHashMap<String, BiFunction<Action, State, State>> getReducerMap() {
+        return this.reducerMap;
+    }
+
     /**
      * Reduces state value, default is identity
+     *
+     * @param action    Action description  
+     * @return 
      */
-    protected State reduce(Action action) { 
-        BiConsumer<Action, State> reducer = reducerMap.get(action.getName());
+    protected State reduce(@NotNull Action action) { 
+        BiFunction<Action, State, State> reducer = reducerMap.get(action.getName());
         if (reducer != null)
-            reducer.accept(action, state);
+            state = reducer.apply(action, state);
 
         return state; 
+    }
+    
+    /**
+     * @param   key     
+     * @param   listener
+     */
+    public Reducer<?, ?> addActionReducer(
+            @NotNull String key, 
+            @NotNull BiFunction<Action, State, State> listener) {
+        reducerMap.put(key, listener);
+        return this;
     }
 
     /** 

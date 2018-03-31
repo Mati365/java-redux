@@ -27,10 +27,9 @@ public class AppToolBar {
 
     public AppToolBar(SheetLogic logic) {
         toolbar = new JToolBar();
-        toolbar.add(new IconButton("new", (MouseEvent e) -> {
-            logic.clear();
-        }));
-        //toolbar.add(new IconButton("undo"));
+        toolbar.add(new IconButton("new", (MouseEvent) -> logic.clear()));
+        toolbar.add(new IconButton("undo", (MouseEvent) -> logic.undo()));
+        
         //toolbar.add(new IconButton("redo"));
         //toolbar.add(new IconButton("add"));
         toolbar.add(new IconButton("exit", (MouseEvent e) -> {
