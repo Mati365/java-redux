@@ -8,6 +8,7 @@
  */
 package com.mati365.calc.logic;
 
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import javax.validation.constraints.NotNull;
 
@@ -32,13 +33,17 @@ public class SheetLogic extends ActionCreator<SheetReducer> {
             })
             
             .subscribe((ArithmeticAction action, ArithmeticState state) -> {
-                if (action.getName() == ArithmeticAction.MATRIX_OPERATION)
-                    return;
+                Optional
+                    .ofNullable(action)
+                    .ifPresent((ArithmeticAction _action) -> {
+                        if (action.getName() == ArithmeticAction.MATRIX_OPERATION)
+                            return;
 
-                SheetLogic.this.reducer.dispatch(
-                    new ArithmeticAction(
-                        ArithmeticAction.MATRIX_OPERATION,
-                        state.lastOperation)); 
+                        SheetLogic.this.reducer.dispatch(
+                            new ArithmeticAction(
+                                ArithmeticAction.MATRIX_OPERATION,
+                                state.lastOperation)); 
+                    });
             });
     }
 

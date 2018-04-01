@@ -17,6 +17,8 @@ import java.util.LinkedHashMap;
 import java.util.UUID;
 
 public class Reducer<Action extends ReducerAction, State extends ReducerState> {
+    private static final String INIT_REDUCER = "@hidden/init_reducer";
+
     private State state = null;
     
     private LinkedHashMap<UUID, BiConsumer<Action, State>> consumers = new LinkedHashMap<>();
@@ -39,11 +41,12 @@ public class Reducer<Action extends ReducerAction, State extends ReducerState> {
      *
      * @param action    Action description  
      * @return 
-     */
+     */ 
+    @SuppressWarnings("unchecked")
     protected State reduce(@NotNull Action action) { 
         BiFunction<Action, State, State> reducer = reducerMap.get(action.getName());
         if (reducer != null)
-            state = reducer.apply(action, state);
+            state = reducer.apply(action, (State) state.branch());
 
         return state; 
     }
@@ -64,10 +67,11 @@ public class Reducer<Action extends ReducerAction, State extends ReducerState> {
      * 
      * @param consumer 
      * @return 
-     */
+     */ 
     public UUID subscribe(@NotNull BiConsumer<Action, State> consumer) {
         UUID uid = UUID.randomUUID();
         consumers.put(uid, consumer);
+        consumer.accept(null, this.state);
         return uid;
     }
 

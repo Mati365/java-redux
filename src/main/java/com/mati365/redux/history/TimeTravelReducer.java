@@ -51,6 +51,9 @@ public class TimeTravelReducer<Action extends ReducerAction, State extends Reduc
         attachTimeReducers();
     }
     
+    public LinkedList<State> getCachedStates()          { return this.cachedStates; }
+    public LinkedList<State> getCachedFutureStates()    { return this.cachedFutureStates; }
+
     /**
      * Set list of actions that don't generate history
      *

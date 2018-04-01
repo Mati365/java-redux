@@ -8,6 +8,7 @@
  */
 package com.mati365.calc.ui;
 
+import net.miginfocom.swing.MigLayout;
 import javax.validation.constraints.NotNull;
 import javax.swing.event.ListSelectionEvent;
 
@@ -90,29 +91,13 @@ public class CalcPanel {
     private SheetLogic logic = new SheetLogic();
 
     private JPanel getCalcContentPanel() {
-        JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(4, 4, 4, 4); 
-        
-        c.fill = GridBagConstraints.BOTH;
-        c.anchor = GridBagConstraints.NORTH;
-
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridwidth = 3;
-        c.weightx = 1;
-        c.weighty = 1;
+        JPanel panel = new JPanel(new MigLayout("insets 0 10 10 10",  "[grow][]", "[top]"));
         panel.add(
                 new JScrollPane(new ArithmeticSheet(this.logic).getTable()),
-                c);
+                "growx");
 
-        c.fill = GridBagConstraints.NONE;
-        c.weightx = 0.05;
-        c.gridx = 3;
-        c.gridy = 0;
         panel.add(
-                new OperationPanel(this.logic).getPanel(),
-                c);
+                new OperationPanel(this.logic).getPanel());
         return panel;
     }
     

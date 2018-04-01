@@ -14,26 +14,42 @@ import javax.swing.JToolBar;
 import javax.swing.UIManager;
 import javax.swing.JButton;
 
+import com.mati365.calc.logic.*;
 import com.mati365.calc.ui.IconButton;
-import com.mati365.calc.logic.SheetLogic;
 
 /** 
  * Component that hold toolbar items in app
  *
  * @author Mateusz Bagiński (cziken58@gmail.com)
  */
-public class AppToolBar {
+public class AppToolBar extends Logicable<SheetLogic> {
     private JToolBar toolbar = null;
+    private IconButton undo = null;
+    private IconButton redo = null;
 
     public AppToolBar(SheetLogic logic) {
+        super(logic);
+
         toolbar = new JToolBar();
+        undo = new IconButton("undo", (MouseEvent) -> logic.undo());
+        redo = new IconButton("redo", (MouseEvent) -> logic.redo());
+        
         toolbar.add(new IconButton("new", (MouseEvent) -> logic.clear()));
-        toolbar.add(new IconButton("undo", (MouseEvent) -> logic.undo())); 
-        toolbar.add(new IconButton("redo", (MouseEvent) -> logic.redo()));
+        toolbar.add(undo); 
+        toolbar.add(redo);
         toolbar.add(new IconButton("exit", (MouseEvent e) -> {
             System.exit(0);
-        }));  
-        
+        }));
+
+        mountStateListeners();
+    }
+    
+    private void mountStateListeners() { 
+        SheetReducer reducer = logic.getReducer();
+        reducer.subscribe((ArithmeticAction action, ArithmeticState state) -> {    
+            undo.setEnabled(!reducer.getCachedStates().isEmpty()); 
+            redo.setEnabled(!reducer.getCachedFutureStates().isEmpty());
+        });
     }
 
     public JToolBar getToolBar() { return this.toolbar; }

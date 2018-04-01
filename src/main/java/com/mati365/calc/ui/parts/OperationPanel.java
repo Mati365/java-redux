@@ -21,7 +21,6 @@ import java.awt.event.MouseEvent;
 import java.awt.GridLayout;
 
 import com.mati365.calc.utils.ClickMouseListener;
-
 import com.mati365.calc.utils.Resources;
 import com.mati365.calc.logic.SheetLogic;
 

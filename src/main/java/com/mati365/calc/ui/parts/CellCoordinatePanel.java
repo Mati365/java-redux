@@ -8,6 +8,7 @@
  */
 package com.mati365.calc.ui;
 
+import net.miginfocom.swing.MigLayout;
 import javax.validation.constraints.NotNull;
 
 import javax.swing.JPanel;
@@ -16,19 +17,14 @@ import javax.swing.JButton;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
-import java.lang.NumberFormatException;
 import java.util.function.Consumer;
 
 import java.awt.event.MouseEvent;
-import java.awt.GridLayout;
 import java.awt.Point;
 
-import com.mati365.calc.utils.ClickMouseListener;
-
-import com.mati365.calc.utils.Resources;
+import com.mati365.calc.utils.*;
 import com.mati365.calc.logic.SheetLogic;
 
 /** 
@@ -46,8 +42,8 @@ public class CellCoordinatePanel extends JPanel {
 
     public CellCoordinatePanel(@NotNull SheetLogic logic) {
         this.logic = logic;    
-        setLayout(new GridLayout(1, 7));
-        
+        setLayout(new MigLayout("inset 10 10 5 10 10"));
+
         row = new JSpinner(
                 new SpinnerNumberModel(
                     0, 0, 
@@ -76,23 +72,12 @@ public class CellCoordinatePanel extends JPanel {
         add(this.getFillButton());
     }
     
-    private void safeValueOperator(Consumer<Float> fn) { 
-        try {
-            Float value = Float.parseFloat(number.getText());
-            fn.accept(value);
-        } catch(NumberFormatException exception) {
-            JOptionPane.showMessageDialog(
-                null,
-                Resources.Translations.getString("incorrect_number_format"),
-                Resources.Translations.getString("error"),
-                JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
     private JButton getFillButton() {
         JButton btn = new JButton(Resources.Translations.getString("fill")); 
         btn.addMouseListener((ClickMouseListener) (MouseEvent e) -> {
-            safeValueOperator(logic::fill);
+            MessageUtils.messagedNumberParse(
+                    number.getText(), 
+                    logic::fill);
         });
         return btn;
     }
@@ -100,7 +85,7 @@ public class CellCoordinatePanel extends JPanel {
     private JButton getEnterButton() { 
         JButton btn = new JButton(Resources.Translations.getString("enter"));
         btn.addMouseListener((ClickMouseListener) (MouseEvent e) -> {
-            safeValueOperator((value) -> {
+            MessageUtils.messagedNumberParse(number.getText(), (value) -> {
                 logic.load(
                         new Point(
                             (Integer)col.getValue(),
