@@ -67,7 +67,8 @@ public class SheetReducer extends TimeTravelReducer<ArithmeticAction, Arithmetic
      * @param state 
      */
     private static ArithmeticState reduceLoadCell(ArithmeticAction action, ArithmeticState state) {
-        Float[] args = (Float[]) action.getPayload();
+        Float[] args = (Float[]) action.getPayload(); 
+        state.modified = true;
         state.matrix.load(
                 new Point(
                     Math.round(args[0]), 

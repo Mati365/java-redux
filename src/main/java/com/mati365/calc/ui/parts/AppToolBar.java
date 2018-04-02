@@ -10,6 +10,7 @@ package com.mati365.calc.ui;
 
 import java.awt.event.MouseEvent;
 
+import java.util.Optional;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
 import javax.swing.JButton;
@@ -37,6 +38,20 @@ public class AppToolBar extends Logicable<SheetLogic> {
         toolbar.add(new IconButton("new", (MouseEvent) -> logic.clear()));
         toolbar.add(undo); 
         toolbar.add(redo);
+        toolbar.add(new IconButton("save", (MouseEvent e) -> {
+            ExporterDialog.export(logic.getReducer().getState());
+        }));
+
+        toolbar.add(new IconButton("open", (MouseEvent e) -> {
+            Optional
+                .ofNullable(ExporterDialog.load())
+                .ifPresent((ArithmeticState state) -> {
+                    logic
+                        .getReducer()
+                        .setState(state);
+                });
+        }));
+        
         toolbar.add(new IconButton("exit", (MouseEvent e) -> {
             System.exit(0);
         }));

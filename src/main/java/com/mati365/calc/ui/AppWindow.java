@@ -15,6 +15,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 import com.mati365.calc.utils.Resources;
+import com.mati365.calc.logic.SheetLogic;
 
 /** 
  * Main app class, opens window
@@ -22,16 +23,21 @@ import com.mati365.calc.utils.Resources;
  * @author Mateusz Bagiński (cziken58@gmail.com)
  */
 public class AppWindow {
-    private static final Dimension WINDOW_SIZE = new Dimension(600, 500);
+    private static final Dimension WINDOW_SIZE = new Dimension(600, 370);
 
     /** 
      * Creates blank window for APP 
      */
     static JFrame createWindow() {
+        SheetLogic logic = new SheetLogic();
+
         JFrame window = new JFrame(Resources.Translations.getString("app_name"));
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setPreferredSize(AppWindow.WINDOW_SIZE);
-        window.setContentPane(new CalcPanel().getDefaultPanel());
+   
+        window.setContentPane(new CalcPanel(logic).getDefaultPanel());
+        window.setJMenuBar(new AppMenu(logic).getMenu());
+         
         window.pack();
         window.setLocationRelativeTo(null);
         return window;

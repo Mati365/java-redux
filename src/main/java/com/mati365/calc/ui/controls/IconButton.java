@@ -35,8 +35,19 @@ public class IconButton extends JButton {
         setPreferredSize(IconButton.ICON_SIZE);
     }
 
-    public IconButton(@NotNull String icon, @NotNull ClickMouseListener listener) {
+    public IconButton(
+            @NotNull String icon, 
+            @NotNull ClickMouseListener listener) {
         this(icon);
+        this.addMouseListener(listener);
+    }
+
+    public IconButton(
+            @NotNull String icon, 
+            String text, 
+            @NotNull ClickMouseListener listener) {
+        this(icon);
+        this.setText(text);
         this.addMouseListener(listener);
     }
 

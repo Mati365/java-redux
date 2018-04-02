@@ -87,17 +87,17 @@ class ExpressionPanel extends Logicable<SheetLogic> {
  * 
  * @author Mateusz Bagiński (cziken58@gmail.com)
  */
-public class CalcPanel {
-    private SheetLogic logic = new SheetLogic();
+public class CalcPanel extends Logicable<SheetLogic> {
+    public CalcPanel(@NotNull SheetLogic logic) {
+        super(logic);
+    }
 
     private JPanel getCalcContentPanel() {
-        JPanel panel = new JPanel(new MigLayout("insets 0 10 10 10",  "[grow][]", "[top]"));
+        JPanel panel = new JPanel(new MigLayout("insets 0 10 10 10",  "[grow]", "[top]"));
         panel.add(
                 new JScrollPane(new ArithmeticSheet(this.logic).getTable()),
                 "growx");
 
-        panel.add(
-                new OperationPanel(this.logic).getPanel());
         return panel;
     }
     
@@ -114,12 +114,8 @@ public class CalcPanel {
 
     public JPanel getDefaultPanel() {
         JPanel panel = new JPanel(new BorderLayout()); 
-        JPanel toolbars = new JPanel(new GridLayout(0, 1)) {{
-            add(new AppMenu(CalcPanel.this.logic).getMenu());
-            add(new AppToolBar(CalcPanel.this.logic).getToolBar());
-        }}; 
         panel.add(
-                toolbars,
+                new AppToolBar(CalcPanel.this.logic).getToolBar(),
                 BorderLayout.NORTH);
         
         panel.add(

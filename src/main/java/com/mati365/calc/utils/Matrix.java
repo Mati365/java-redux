@@ -8,6 +8,8 @@
  */
 package com.mati365.calc.utils;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.function.Function;
 import java.util.function.BiFunction;
 import java.util.Arrays;
@@ -24,6 +26,11 @@ import javax.validation.constraints.NotNull;
 public class Matrix<T extends Number> implements Cloneable {
     private T[][] array = null;
     private Dimension dimensions = null;
+    
+    /**
+     * Default constructor used during deserlaize 
+     */
+    public Matrix() {}
 
     /** 
      * Copy constructor of matrix class 
@@ -72,10 +79,17 @@ public class Matrix<T extends Number> implements Cloneable {
         this.array = (T[][]) Array.newInstance(cellType, dimensions.height, dimensions.width);  
     }
 
-    public T[][] getArray()     { return array; }
-    public int getWidth()       { return dimensions.width; }
-    public int getHeight()      { return dimensions.height; }    
-    public int getLength()      {
+    public void setArray(T[][] array) { this.array = array; }
+    public void setDimensions(@NotNull Dimension dimensions) {
+        this.dimensions = dimensions;
+    }
+
+    public T[][] getArray()             { return array; }
+    public Dimension getDimensions()    { return dimensions; }
+
+    @JsonIgnore public int getWidth()       { return dimensions.width; }
+    @JsonIgnore public int getHeight()      { return dimensions.height; }    
+    @JsonIgnore public int getLength()      {
         return dimensions.width * dimensions.height;
     }
 

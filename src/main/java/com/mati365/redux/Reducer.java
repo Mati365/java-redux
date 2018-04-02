@@ -32,6 +32,14 @@ public class Reducer<Action extends ReducerAction, State extends ReducerState> {
     }
     
     public State getState() { return this.state; }
+    public void setState(@NotNull State state) {
+        System.out.println("A");
+        this.state = state; 
+        consumers.forEach((key, consumer) -> {
+            consumer.accept(null, state);
+        });
+    }
+    
     public LinkedHashMap<String, BiFunction<Action, State, State>> getReducerMap() {
         return this.reducerMap;
     }

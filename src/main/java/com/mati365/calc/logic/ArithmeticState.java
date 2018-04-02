@@ -8,6 +8,7 @@
  */
 package com.mati365.calc.logic;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.validation.constraints.NotNull;
 
 import java.util.Observable;
@@ -25,10 +26,12 @@ import com.mati365.calc.utils.Matrix;
 public class ArithmeticState implements ReducerState {
     public String error = null;
     public Integer lastOperation = 2;
-    public String operationResult = "";
+    public String operationResult = ""; 
     public Matrix<Float> matrix = new Matrix<>(new Dimension(5, 5), Float.class).fill(0.f);
-    
+    @JsonIgnore public Boolean modified = false;
+
     @Override
+    @JsonIgnore
     public ArithmeticState branch() {
         ArithmeticState state = new ArithmeticState();
 

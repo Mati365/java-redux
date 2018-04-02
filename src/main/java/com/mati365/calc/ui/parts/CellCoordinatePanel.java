@@ -73,26 +73,30 @@ public class CellCoordinatePanel extends JPanel {
     }
     
     private JButton getFillButton() {
-        JButton btn = new JButton(Resources.Translations.getString("fill")); 
-        btn.addMouseListener((ClickMouseListener) (MouseEvent e) -> {
-            MessageUtils.messagedNumberParse(
-                    number.getText(), 
-                    logic::fill);
-        });
+        IconButton btn = new IconButton(
+                "fill",
+                Resources.Translations.getString("fill"),
+                (ClickMouseListener) (e) -> {
+                    MessageUtils.messagedNumberParse(
+                            number.getText(), 
+                            logic::fill);
+                }); 
         return btn;
     }
 
     private JButton getEnterButton() { 
-        JButton btn = new JButton(Resources.Translations.getString("enter"));
-        btn.addMouseListener((ClickMouseListener) (MouseEvent e) -> {
-            MessageUtils.messagedNumberParse(number.getText(), (value) -> {
-                logic.load(
-                        new Point(
-                            (Integer)col.getValue(),
-                            (Integer)row.getValue()),
-                        value);
-            });    
-        });
+        IconButton btn = new IconButton( 
+                "enter", 
+                Resources.Translations.getString("enter"), 
+                (ClickMouseListener) (e) -> {
+                    MessageUtils.messagedNumberParse(number.getText(), (value) -> {
+                        logic.load(
+                                new Point(
+                                    (Integer)col.getValue(),
+                                    (Integer)row.getValue()),
+                                value);
+                    });
+                });
         return btn;
     }
 }
