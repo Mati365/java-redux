@@ -13,6 +13,7 @@ import javax.swing.plaf.ColorUIResource;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.BorderLayout;
 
 import com.mati365.calc.utils.Resources;
 import com.mati365.calc.logic.SheetLogic;
@@ -34,8 +35,12 @@ public class AppWindow {
         JFrame window = new JFrame(Resources.Translations.getString("app_name"));
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setPreferredSize(AppWindow.WINDOW_SIZE);
-   
-        window.setContentPane(new CalcPanel(logic).getDefaultPanel());
+        
+        JPanel content = new JPanel(new BorderLayout());
+        content.add(new CalcPanel(logic).getDefaultPanel(), BorderLayout.CENTER);
+        content.add(new StatusBar(logic).getDefaultPanel(), BorderLayout.SOUTH);
+
+        window.setContentPane(content);
         window.setJMenuBar(new AppMenu(logic).getMenu());
          
         window.pack();

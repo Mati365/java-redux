@@ -17,8 +17,8 @@ import java.awt.Component;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JLabel;
-import javax.swing.table.TableCellRenderer;
 
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.*;
 
 import com.mati365.calc.logic.*;

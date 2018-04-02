@@ -12,6 +12,11 @@ package com.mati365.calc.logic;
 import java.util.function.BiConsumer;
 import java.util.Observable;
 import java.util.LinkedHashMap;
+import java.util.Calendar;
+import java.util.Date;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import java.awt.Dimension;
 import java.awt.Point;
@@ -62,13 +67,19 @@ public class SheetReducer extends TimeTravelReducer<ArithmeticAction, Arithmetic
         return state;
     };
 
+    private static final String getLastModifiedDate() {
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        Date today = Calendar.getInstance().getTime();
+        return df.format(today);
+    };
+
     /** 
      * @param action 
      * @param state 
      */
     private static ArithmeticState reduceLoadCell(ArithmeticAction action, ArithmeticState state) {
         Float[] args = (Float[]) action.getPayload(); 
-        state.modified = true;
+        state.lastModified = SheetReducer.getLastModifiedDate();
         state.matrix.load(
                 new Point(
                     Math.round(args[0]), 

@@ -28,7 +28,7 @@ public class ArithmeticState implements ReducerState {
     public Integer lastOperation = 2;
     public String operationResult = ""; 
     public Matrix<Float> matrix = new Matrix<>(new Dimension(5, 5), Float.class).fill(0.f);
-    @JsonIgnore public Boolean modified = false;
+    public String lastModified = null;
 
     @Override
     @JsonIgnore
@@ -36,6 +36,7 @@ public class ArithmeticState implements ReducerState {
         ArithmeticState state = new ArithmeticState();
 
         state.error = this.error;
+        state.lastModified = this.lastModified;
         state.lastOperation = this.lastOperation;
         state.operationResult = this.operationResult;
         state.matrix = new Matrix<>(Float.class, this.matrix);
