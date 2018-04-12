@@ -118,10 +118,12 @@ public class AppMenu extends Logicable<SheetLogic> {
     public JMenu getInfoMenu() {
         JMenu menu = new JMenu(Resources.Translations.getString("info"));
         
-        JMenuItem help = new TranslatedMenuItem("help", "help", null);
+        JMenuItem help = new TranslatedMenuItem(
+                "help", "help", (MouseEvent) -> new InfoDialog(menu));
         menu.add(help);
 
-        JMenuItem author = new TranslatedMenuItem("author", "monkey", null);
+        JMenuItem author = new TranslatedMenuItem(
+                "author", "monkey", (MouseEvent) -> new AuthorDialog(menu));
         menu.add(author);
         
         return menu;

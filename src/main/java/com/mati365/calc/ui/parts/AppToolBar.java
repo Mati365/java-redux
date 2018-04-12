@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
 import javax.swing.JButton;
+import javax.swing.Box;
 
 import com.mati365.calc.logic.*;
 import com.mati365.calc.ui.IconButton;
@@ -38,13 +39,23 @@ public class AppToolBar extends Logicable<SheetLogic> {
         override = new IconButton("override", (MouseEvent) -> logic.exportOverridenState());
 
         toolbar.add(new IconButton("new", (MouseEvent) -> logic.clear()));
+        
+        toolbar.addSeparator();
         toolbar.add(undo); 
         toolbar.add(redo);
+        toolbar.addSeparator();
+
         toolbar.add(override);
         toolbar.add(new IconButton("save", (MouseEvent) -> logic.exportState()));
         toolbar.add(new IconButton("open", (MouseEvent) -> logic.loadState())); 
+    
+        toolbar.addSeparator();
+        toolbar.add(new IconButton("monkey", (MouseEvent) -> new AuthorDialog(toolbar))); 
+        toolbar.add(new IconButton("help", (MouseEvent) -> new InfoDialog(toolbar))); 
+        
+        toolbar.addSeparator();
         toolbar.add(new IconButton("exit", (MouseEvent) -> AppDestroyer.tryKillApp(logic)));
-
+        
         mountStateListeners();
     }
     

@@ -74,10 +74,10 @@ public class AppWindow {
             .subscribe((action, state) -> {
                 String text = Resources.Translations.getString("app_name");
                 if (state.loadedFile != null)
-                    text += " (" + state.loadedFile + ") ";
+                    text += " (" + state.loadedFile + ")";
                 
                 window.setTitle(
-                        text + (state.unsavedChanges ? "*" : "")
+                        text + (state.unsavedChanges ? " *" : "")
                 ); 
             });
         return window;

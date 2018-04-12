@@ -1,6 +1,6 @@
-/* file name  : src/main/java/com/mati365/calc/ui/dialogs/AuthorDialog.java
+/* file name  : src/main/java/com/mati365/calc/ui/dialogs/InfoDialog.java
  * authors    : Mateusz Bagiński (cziken58@gmail.com)
- * created    : ptk 23 mar 22:46:41 2018
+ * created    : czw 12 kwi 19:24:22 2018
  * copyright  : MIT
  *
  * modifications:
@@ -16,12 +16,12 @@ import com.mati365.calc.utils.Resources;
 /** 
  * @author Mateusz Bagiński (cziken58@gmail.com)
  */
-public class AuthorDialog extends MessageDialog {
+public class InfoDialog extends MessageDialog {
     private static final long serialVersionUID = 1l;
 
-    public AuthorDialog(@NotNull JComponent parent) {
+    public InfoDialog(@NotNull JComponent parent) {
         super(
                 parent, 
-                Resources.Translations.getString("author_message"));
+                Resources.Translations.getString("info_message"));
     }
 }

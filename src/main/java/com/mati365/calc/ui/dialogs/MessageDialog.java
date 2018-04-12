@@ -11,12 +11,7 @@ package com.mati365.calc.ui;
 import javax.validation.constraints.NotNull;
 
 import java.awt.BorderLayout;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JFrame;
-import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 /** 
  * @author Mateusz Bagiński (cziken58@gmail.com)
@@ -30,7 +25,8 @@ public class MessageDialog extends JDialog {
                 "Dialog");
 
         getContentPane().add(this.getMessagePanel(message));
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE); 
+        setLocationRelativeTo(null);
         pack();
         setVisible(true);
     }
@@ -42,6 +38,7 @@ public class MessageDialog extends JDialog {
     private JPanel getMessagePanel(String message) { 
         JPanel panel = new JPanel();
         panel.add(new JLabel(message));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         return panel;
     }    
 }
