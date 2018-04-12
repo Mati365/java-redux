@@ -15,7 +15,7 @@ import java.util.Observable;
 import java.awt.Dimension;
 
 import com.mati365.redux.Reducer;
-import com.mati365.redux.ReducerState;
+import com.mati365.redux.ImportableState;
 import com.mati365.calc.utils.Matrix;
 
 /** 
@@ -23,15 +23,14 @@ import com.mati365.calc.utils.Matrix;
  * 
  * @author Mateusz Bagiński (cziken58@gmail.com)
  */
-public class ArithmeticState implements ReducerState {
+public class ArithmeticState extends ImportableState {
     public String error = null;
     public Integer lastOperation = 2;
     public String operationResult = ""; 
     public Matrix<Float> matrix = new Matrix<>(new Dimension(5, 5), Float.class).fill(0.f);
     public String lastModified = null;
     
-    @JsonIgnore
-    public Boolean unsavedChanges = false;
+    @JsonIgnore public Boolean unsavedChanges = false;
 
     @Override
     @JsonIgnore
@@ -43,6 +42,7 @@ public class ArithmeticState implements ReducerState {
         state.lastOperation = this.lastOperation;
         state.operationResult = this.operationResult;
         state.unsavedChanges = this.unsavedChanges;     
+        state.loadedFile = this.loadedFile;
         state.matrix = new Matrix<>(Float.class, this.matrix);
         return state;
     }

@@ -22,18 +22,20 @@ import java.io.IOException;
  * 
  * @author Mateusz Bagiński (cziken58@gmail.com)
  */
-public class StateExporter<T>  {
+public class StateExporter {
     /**
      * Export app state to json file
      *
      * @param file      File path
      * @param state     App state
      */
-    public static final <T> void export(
+    public static final <T extends ImportableState> void export(
             @NotNull File file,
             @NotNull T state) {
         try { 
             ObjectMapper mapper = new ObjectMapper();
+            state.loadedFile = file.getPath();
+
             mapper.writeValue(file, state);
         } catch (IOException e) {
             e.printStackTrace();
@@ -47,11 +49,13 @@ public class StateExporter<T>  {
      * @param file      File path 
      * @return App state
      */
-    public static final <T> T load(
+    public static final <T extends ImportableState> T load(
             @NotNull Class<? extends T> type, 
             @NotNull File file) {
         try {
-            return new ObjectMapper().readValue(file, type);
+            T state = new ObjectMapper().readValue(file, type);
+            state.loadedFile = file.getPath();
+            return state;
         } catch (IOException e) {
             e.printStackTrace();
         }

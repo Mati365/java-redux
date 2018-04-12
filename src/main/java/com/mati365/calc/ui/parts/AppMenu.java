@@ -9,6 +9,7 @@
 package com.mati365.calc.ui;
 
 import java.awt.event.ActionListener;
+import java.awt.Dimension;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -29,8 +30,15 @@ import com.mati365.calc.logic.Logicable;
 class TranslatedMenuItem extends JMenuItem {
     private static final long serialVersionUID = 1L;
 
-    public TranslatedMenuItem(@NotNull String key, ActionListener listener) {
-        super(Resources.Translations.getString(key));
+    public TranslatedMenuItem(
+            @NotNull String key, 
+            String icon, 
+            ActionListener listener) {
+        super(
+                Resources.Translations.getString(key),
+                icon == null 
+                    ? null
+                    : Resources.Images.getScaledIcon(icon, new Dimension(20, 20)));
         if (listener != null)
             addActionListener(listener);
     }
@@ -63,13 +71,20 @@ public class AppMenu extends Logicable<SheetLogic> {
     public JMenu getFileMenu() {
         JMenu menu = new JMenu(Resources.Translations.getString("file"));
         
-        JMenuItem open = new TranslatedMenuItem("open", (MouseEvent) -> logic.loadState());
+        JMenuItem open = new TranslatedMenuItem(
+                "open", "open", (MouseEvent) -> logic.loadState());
         menu.add(open);
+ 
+        JMenuItem override = new TranslatedMenuItem(
+                "override", "override", (MouseEvent) -> logic.exportOverridenState());
+        menu.add(override);
 
-        JMenuItem save = new TranslatedMenuItem("save", (MouseEvent) -> logic.exportState());
+        JMenuItem save = new TranslatedMenuItem(
+                "save", "save", (MouseEvent) -> logic.exportState());
         menu.add(save);
         
-        JMenuItem exit = new TranslatedMenuItem("exit", (e) -> AppDestroyer.tryKillApp(logic));
+        JMenuItem exit = new TranslatedMenuItem(
+                "exit", "exit", (e) -> AppDestroyer.tryKillApp(logic));
         menu.addSeparator();
         menu.add(exit);
 
@@ -84,10 +99,12 @@ public class AppMenu extends Logicable<SheetLogic> {
     public JMenu getEditMenu() {
         JMenu menu = new JMenu(Resources.Translations.getString("edit"));
 
-        JMenuItem undo = new TranslatedMenuItem("undo", (MouseEvent) -> logic.undo());
+        JMenuItem undo = new TranslatedMenuItem(
+                "undo", "undo", (MouseEvent) -> logic.undo());
         menu.add(undo);
 
-        JMenuItem redo = new TranslatedMenuItem("redo", (MouseEvent) -> logic.redo());
+        JMenuItem redo = new TranslatedMenuItem(
+                "redo", "redo", (MouseEvent) -> logic.redo());
         menu.add(redo);
         
         return menu;
@@ -101,10 +118,10 @@ public class AppMenu extends Logicable<SheetLogic> {
     public JMenu getInfoMenu() {
         JMenu menu = new JMenu(Resources.Translations.getString("info"));
         
-        JMenuItem help = new TranslatedMenuItem("help", null);
+        JMenuItem help = new TranslatedMenuItem("help", "help", null);
         menu.add(help);
 
-        JMenuItem author = new TranslatedMenuItem("author", null);
+        JMenuItem author = new TranslatedMenuItem("author", "monkey", null);
         menu.add(author);
         
         return menu;

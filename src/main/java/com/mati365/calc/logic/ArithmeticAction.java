@@ -21,7 +21,8 @@ public class ArithmeticAction extends ReducerAction {
     public static final String FILL             = "@arithmetic/fill";
     public static final String CALC_ERROR       = "@arithmetic/calc_error";
     public static final String MATRIX_OPERATION = "@arithmetic/matrix_operation";
-    
+    public static final String MARK_SAVED       = "@arithmetic/mark_saved";
+
     public ArithmeticAction(@NotNull String name) {
         super(name);
     }

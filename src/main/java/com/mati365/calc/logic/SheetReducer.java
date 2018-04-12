@@ -42,7 +42,17 @@ public class SheetReducer extends TimeTravelReducer<ArithmeticAction, Arithmetic
             put(ArithmeticAction.CALC_ERROR, SheetReducer::reduceCalcError);
             put(ArithmeticAction.LOAD_CELL, SheetReducer::reduceLoadCell);
             put(ArithmeticAction.MATRIX_OPERATION, SheetReducer::reduceMatrixOperation);
+            put(ArithmeticAction.MARK_SAVED, SheetReducer::reduceSaved);
         }});
+    }
+    
+    /** 
+     * @param state 
+     * @param state 
+     */
+    public static ArithmeticState reduceSaved(ArithmeticAction action, ArithmeticState state) {
+        state.unsavedChanges = false;
+        return state;
     }
 
     /** 
@@ -51,7 +61,8 @@ public class SheetReducer extends TimeTravelReducer<ArithmeticAction, Arithmetic
      */
     private static ArithmeticState reduceClear(ArithmeticAction action, ArithmeticState state) {
         Float args = (Float) action.getPayload();
-
+        
+        state.unsavedChanges = true;
         state.operationResult = "";
         state.matrix.fill(args == null ? 0.f : args);
         return state;

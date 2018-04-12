@@ -8,16 +8,20 @@
  */
 package com.mati365.calc.logic;
 
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
 import java.util.function.BiConsumer;
-import javax.validation.constraints.NotNull;
+
+import java.io.File;
 
 import java.awt.Dimension;
 import java.awt.Point;
 
 import com.mati365.calc.ui.ExporterDialog;
+
 import com.mati365.redux.ActionCreator;
 import com.mati365.redux.history.TimeTravelReducer;
+import com.mati365.redux.StateExporter;
 
 /** 
  * Whole App logic  
@@ -114,14 +118,38 @@ public class SheetLogic extends ActionCreator<SheetReducer> {
                 new ArithmeticAction(TimeTravelReducer.REDO));
     }
 
+    private void markSaved() {
+        reducer.dispatch(
+                new ArithmeticAction(
+                    ArithmeticAction.MARK_SAVED,
+                    null));
+    }
+
     /**
      * Dumps app state to file, shows dialog
      */
     public void exportState() {
         ArithmeticState state = reducer.getState();
 
-        state.unsavedChanges = false;
         ExporterDialog.export(state);
+        markSaved();
+    }
+
+    /**
+     * Exports file with the same path as previous
+     */
+    public void exportOverridenState() {
+        ArithmeticState state = reducer.getState();
+        
+        if (state.loadedFile == null) {
+            exportState();
+            return;
+        }
+
+        StateExporter.export(
+                new File(state.loadedFile),
+                state);
+        markSaved();
     }
     
     /**
