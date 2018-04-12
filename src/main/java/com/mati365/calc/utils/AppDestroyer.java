@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 import javax.swing.*;
 
 import com.mati365.calc.utils.Resources;
-import com.mati365.calc.utils.Resources;
 import com.mati365.calc.logic.SheetLogic;
 
 /** 
