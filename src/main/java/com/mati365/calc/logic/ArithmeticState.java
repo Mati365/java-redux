@@ -29,6 +29,9 @@ public class ArithmeticState implements ReducerState {
     public String operationResult = ""; 
     public Matrix<Float> matrix = new Matrix<>(new Dimension(5, 5), Float.class).fill(0.f);
     public String lastModified = null;
+    
+    @JsonIgnore
+    public Boolean unsavedChanges = false;
 
     @Override
     @JsonIgnore
@@ -39,8 +42,8 @@ public class ArithmeticState implements ReducerState {
         state.lastModified = this.lastModified;
         state.lastOperation = this.lastOperation;
         state.operationResult = this.operationResult;
+        state.unsavedChanges = this.unsavedChanges;     
         state.matrix = new Matrix<>(Float.class, this.matrix);
-        
         return state;
     }
 }

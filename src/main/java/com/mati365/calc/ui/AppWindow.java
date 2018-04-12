@@ -8,14 +8,17 @@
  */
 package com.mati365.calc.ui;
 
+import javax.validation.constraints.NotNull;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
+import java.awt.event.*;
 
 import com.mati365.calc.utils.Resources;
+import com.mati365.calc.utils.AppDestroyer;
 import com.mati365.calc.logic.SheetLogic;
 
 /** 
@@ -24,7 +27,20 @@ import com.mati365.calc.logic.SheetLogic;
  * @author Mateusz Bagiński (cziken58@gmail.com)
  */
 public class AppWindow {
-    private static final Dimension WINDOW_SIZE = new Dimension(600, 370);
+    private static final Dimension WINDOW_SIZE = new Dimension(600, 450);
+    
+    /**
+     * Builds event listener when user tries
+     * to close application without saving changes
+     */    
+    private static final WindowAdapter getDestroyWindowAdapter(@NotNull SheetLogic logic) {
+        return new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent event) {
+                AppDestroyer.tryKillApp(logic);
+            }
+        };
+    }
 
     /** 
      * Creates blank window for APP 
@@ -33,18 +49,24 @@ public class AppWindow {
         SheetLogic logic = new SheetLogic();
 
         JFrame window = new JFrame(Resources.Translations.getString("app_name"));
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         window.setPreferredSize(AppWindow.WINDOW_SIZE);
         
         JPanel content = new JPanel(new BorderLayout());
-        content.add(new CalcPanel(logic).getDefaultPanel(), BorderLayout.CENTER);
-        content.add(new StatusBar(logic).getDefaultPanel(), BorderLayout.SOUTH);
+        content.add(
+                new CalcPanel(logic).getDefaultPanel(), 
+                BorderLayout.CENTER);
+        content.add(
+                new StatusBar(logic).getDefaultPanel(), 
+                BorderLayout.SOUTH);
 
         window.setContentPane(content);
         window.setJMenuBar(new AppMenu(logic).getMenu());
          
         window.pack();
         window.setLocationRelativeTo(null);
+        window.addWindowListener(
+                AppWindow.getDestroyWindowAdapter(logic));
         return window;
     }
 

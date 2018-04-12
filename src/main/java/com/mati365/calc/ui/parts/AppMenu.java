@@ -16,6 +16,8 @@ import javax.swing.JMenuItem;
 import javax.validation.constraints.NotNull;
 
 import com.mati365.calc.utils.Resources;
+import com.mati365.calc.utils.AppDestroyer;
+
 import com.mati365.calc.logic.SheetLogic;
 import com.mati365.calc.logic.Logicable;
 
@@ -61,15 +63,13 @@ public class AppMenu extends Logicable<SheetLogic> {
     public JMenu getFileMenu() {
         JMenu menu = new JMenu(Resources.Translations.getString("file"));
         
-        JMenuItem open = new TranslatedMenuItem("open", null);
+        JMenuItem open = new TranslatedMenuItem("open", (MouseEvent) -> logic.loadState());
         menu.add(open);
 
-        JMenuItem save = new TranslatedMenuItem("save", null);
+        JMenuItem save = new TranslatedMenuItem("save", (MouseEvent) -> logic.exportState());
         menu.add(save);
         
-        JMenuItem exit = new TranslatedMenuItem("exit", (e) -> {
-            System.exit(0);
-        });
+        JMenuItem exit = new TranslatedMenuItem("exit", (e) -> AppDestroyer.tryKillApp(logic));
         menu.addSeparator();
         menu.add(exit);
 

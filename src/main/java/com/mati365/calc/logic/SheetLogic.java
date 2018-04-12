@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 import java.awt.Dimension;
 import java.awt.Point;
 
+import com.mati365.calc.ui.ExporterDialog;
 import com.mati365.redux.ActionCreator;
 import com.mati365.redux.history.TimeTravelReducer;
 
@@ -111,5 +112,29 @@ public class SheetLogic extends ActionCreator<SheetReducer> {
     public void redo() {
         reducer.dispatch(
                 new ArithmeticAction(TimeTravelReducer.REDO));
+    }
+
+    /**
+     * Dumps app state to file, shows dialog
+     */
+    public void exportState() {
+        ArithmeticState state = reducer.getState();
+
+        state.unsavedChanges = false;
+        ExporterDialog.export(state);
+    }
+    
+    /**
+     * Load app state from file, shows dialog
+     */
+    public void loadState() {
+        Optional
+            .ofNullable(ExporterDialog.load())
+            .ifPresent((ArithmeticState state) -> {
+                SheetLogic
+                    .this
+                    .getReducer()
+                    .setState(state);
+            });
     }
 }
